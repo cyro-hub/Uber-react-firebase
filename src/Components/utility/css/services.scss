@@ -1,0 +1,32 @@
+#services{
+    padding: 1rem;
+    article{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+    h1{
+        width: 100%;
+        text-align: center;
+        margin: 1rem;
+        font-size: x-large;
+    }
+    div{
+        max-width: 300px;
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0.5px 1px 1.5px ;
+        margin: 0.5rem;
+        svg{
+            margin: 0.5rem auto;
+            color: green;
+        }
+        h2,p{
+            width: 100%;
+            text-align: center;
+        }
+    }
+}

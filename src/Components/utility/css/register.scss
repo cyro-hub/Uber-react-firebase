@@ -1,0 +1,59 @@
+.register{
+    
+    height:100% ;
+    width: 100%;
+    padding-bottom: 3rem;
+
+    h1{
+        width: 100%;
+        text-align: center;
+        font-size: xx-large;
+        font-weight: bolder;
+        color: white;
+        margin-top: 2rem;
+    }
+    form{
+        display: flex;
+        flex-direction: column;
+        max-width: 500px;
+        min-width: 200px;
+        margin: 0 auto;
+        font-size: larger;
+        font-weight: bold;
+
+        input,select,textarea,div{
+            width: 90%;
+            display: block;
+            outline: none;
+            border: 0.25px solid gray;
+            border-radius: 5px;
+            margin: 0.5rem auto;
+            padding: 10px;
+            background-color: rgba(16, 25, 62, 0.766);
+            color: white;
+        }
+        label{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            img{
+                border-radius: 50%;
+            }
+        }
+        div{
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: bolder;
+            background-color: transparent;
+            .swap{
+                background-color: transparent;
+                border: none;
+                color: white;
+            }
+        }
+    }
+}

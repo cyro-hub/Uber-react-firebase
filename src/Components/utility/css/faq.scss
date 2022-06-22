@@ -1,0 +1,14 @@
+.faq{
+    display: flex;
+    flex-direction: column;
+    margin: 1rem auto;
+    h1{
+        width: 100%;
+        text-align: center;
+        padding:1rem;
+    }
+
+    div{
+        margin: 0.25rem 1rem;
+    }
+}

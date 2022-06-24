@@ -1,13 +1,15 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import {utils,submit} from '../utility/utility'
 import * as appActions from '../../redux/actions/app'
+import * as userActions from '../../redux/actions/user'
 import Nav from './Nav'
 import './css/register.scss'
 
 function Login() {
 const [warning,setWarning]=useState('')
+const [success,setSuccess]=useState('')
 const [user,setUser]=useState({
-  phone:'',
+  email:'',
   password:''
 })
 
@@ -18,23 +20,37 @@ const handleSubmit=(e)=>{
       if(user[key]===''){
       setWarning(`${key} is empty`)
       return
+    }
   }
-  
-  // if all the tests are completed run the submit function   
-  submit(user)
-  }
+  appActions.isPosting()
+  userActions.signInUser(user)
+  .then(()=>{
+    setSuccess('Successfully login')
+    appActions.isPosting()
+  }).catch(error=>{
+    setWarning(error.message)
+    appActions.isPosting()
+  })
 }
+useEffect(()=>{
+  const timer = setTimeout(()=>{
+    setWarning('');
+    setSuccess('')
+  },4000)
 
+  return()=>clearTimeout(timer)
+})
   return <section className='register max-width'>
     <Nav/>
     <h1>Sign-in</h1>
     <form onSubmit={(e)=>handleSubmit(e)}>
       {warning&&<p className='warning'>{warning}</p>}
-        <input type="text" 
-               name='phone' 
+      {success&&<p className='success'>{success}</p>}
+        <input type="email" 
+               name='email' 
                value={user.phone} 
                onChange={(e)=>utils(e,user,setUser)}
-               placeholder='Please Enter your phone number'
+               placeholder='Please Enter your email'
                autoComplete='off' />
         <input type="password" 
                name='password' 

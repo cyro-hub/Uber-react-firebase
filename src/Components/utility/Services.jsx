@@ -1,5 +1,8 @@
 import React from 'react'
-import {BsFillBookmarkCheckFill} from 'react-icons/bs'
+import {BsFillBookmarkCheckFill,BsFillEyeFill} from 'react-icons/bs'
+import {AiOutlineAppstoreAdd} from 'react-icons/ai'
+import {GiWorld} from 'react-icons/gi'
+import {MdOutlineSecurity} from 'react-icons/md'
 import './css/services.scss'
 
 function Services() {
@@ -29,17 +32,21 @@ export const services=[
         header:'Booking',
         description:'We handle booking of travel trip and allow drivers to know your pickup position'
     },{
-        Icon:BsFillBookmarkCheckFill,
-        header:'Booking',
-        description:'We handle booking of travel trip and allow drivers to know your pickup position'
+        Icon:AiOutlineAppstoreAdd,
+        header:'Add Travel Location',
+        description:'Adding your present area is not and issue. Use this app an enjoy'
     },{
-        Icon:BsFillBookmarkCheckFill,
-        header:'Booking',
-        description:'We handle booking of travel trip and allow drivers to know your pickup position'
+        Icon:BsFillEyeFill,
+        header:'Viewing Others',
+        description:'We allow our user to view other drivers or user in the same location'
     },{
-        Icon:BsFillBookmarkCheckFill,
-        header:'Booking',
-        description:'We handle booking of travel trip and allow drivers to know your pickup position'
+        Icon:GiWorld,
+        header:'World Wide',
+        description:'We handle booking all over the world thank to your support'
+    },{
+        Icon:MdOutlineSecurity,
+        header:'Security',
+        description:'Security is the best in this app we use google you trust google you trust us'
     }
 ]
 

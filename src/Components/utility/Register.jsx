@@ -1,5 +1,6 @@
 import React,{useEffect, useState} from 'react'
 import * as appActions from '../../redux/actions/app'
+import * as userActions from '../../redux/actions/user'
 import Avatar from '@mui/material/Avatar';
 import Nav from './Nav'
 import {regions} from '../data'
@@ -8,15 +9,16 @@ import './css/register.scss'
 
 function Register() {
 const [warning,setWarning]=useState('')
+const [success,setSuccess]=useState('')
 const [image,setImage]=useState(null)
 const [user,setUser] = useState({
   name:'',
-  phone:'',
+  email:'',
   password:'',
   confirmPassword:'',
   location:regions[0],
   role:'user',
-  imageURL:''
+  imageURL:'url'
 })
 
 const handleSubmit=(e)=>{
@@ -26,27 +28,26 @@ const handleSubmit=(e)=>{
       if(user[key]===''){
       setWarning(`${key} is empty`)
       return
-  }
+  } 
+}
 
-  if(!user.password.match(passwordPattern)){
+  if(!passwordPattern.test(user.password)){
     setWarning('Password must contain atleast 8 letter or numbers')
     return;
   }
+//setting the loader
+appActions.isPosting();
 
-  if(!user.tel.match(numberPattern)){
-      setWarning('Phone number is incorrect')
-      return;
-  }
+// posting the user
+userActions.signUpUser({...user,imageURL:image})
+.then(()=>{
+  setSuccess('Successfully register')
+})
+.catch((error)=>{
+  appActions.isPosting()
+  setWarning(error.message)
+})
 
-  for(const key in user){
-      if(user[key]===''){
-        setWarning(`${key} is empty`)
-      }
-  }
-  
-  // if all the tests are completed run the submit function   
-  submit(user)
-  }
 }
 
 useEffect(()=>{
@@ -62,6 +63,7 @@ useEffect(()=>{
     <h1>Sign-up</h1>
     <form onSubmit={handleSubmit}>
       {warning&&<p className='warning'>{warning}</p>}
+      {success&&<p className='success'>{success}</p>}
         <label htmlFor="image" className='submit contact'>
           {
             image?<Avatar alt="Selected image"
@@ -85,11 +87,11 @@ useEffect(()=>{
                onChange={(e)=>utils(e,user,setUser)}
                placeholder='Please Enter your name'
                autoComplete='off' />
-        <input type="text" 
-               name='phone' 
-               value={user.phone} 
+        <input type="email" 
+               name='email' 
+               value={user.email} 
                onChange={(e)=>utils(e,user,setUser)}
-               placeholder='Please Enter your phone number'
+               placeholder='Please Enter your email'
                autoComplete='off' />
         <input type="password" 
                name='password' 

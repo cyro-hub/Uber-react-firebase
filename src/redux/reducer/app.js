@@ -1,13 +1,27 @@
 import * as types from '../action type'
 
 const initialState = {
-    signUpSwitcher:false,
+    signUpSwitcher:true,
     isPostModal:false,
-    isPosting:false
+    isPosting:false,
+    area:null,
+    mapLocation:null,
+    contacts:[]
 }
 
 const app = (state=initialState,action)=>{
     switch(action.type){
+        case types.getContacts:
+            return{
+                ...state,
+                contacts:action.payload
+            }
+        case types.userCurrentLocation:
+            return{
+                ...state,
+                area:action.payload.area,
+                mapLocation:action.payload.mapLocation 
+            }
         case types.isPosting:
             return{
                 ...state,

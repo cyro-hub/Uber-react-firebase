@@ -24,10 +24,10 @@ useEffect(()=>{
         <div className='nav_links'>
             <div>
                 <Link to='/'>Home</Link>
-                <Link to='/#about'>About-us</Link>
+                <Link to='/user'>profile</Link>
                 {
                     size>400&&
-                    <Link to='/#services'>Services</Link>
+                    <Link to='/post'>Post</Link>
                     
                 }
                 {

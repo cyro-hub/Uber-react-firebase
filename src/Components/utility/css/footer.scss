@@ -1,5 +1,9 @@
 .footer{
     display: flex;
-    flex-direction: column;
     margin: 1rem auto;
+    a{
+        text-decoration: none;
+        color: white;
+        margin: 1rem;
+    }
 }

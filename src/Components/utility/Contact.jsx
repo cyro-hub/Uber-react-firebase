@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {regions} from '../data';
-import {utils,submit} from './utility';
-// import './css/contact.scss'
+import {utils} from './utility';
+import * as appActions from '../../redux/actions/app'
 import './css/register.scss'
 
 function Contact() {
@@ -19,16 +19,20 @@ for(const key in contact){
     if(contact[key]===''){
     setWarning(`${key} is empty`)
     return
+    }
 }
 
-// if all the tests are completed run the submit function   
-submit(contact)
-}
-
+appActions.addContact(contact).then(()=>{
+    setContact({
+        name:'',
+        region:regions[0],
+        message:''
+    })
+})
 }
 
   return (<section className='register max-width'>
-      <h1>Contact-Us</h1>
+      <h1>Comment</h1>
       <form onSubmit={(e)=>handleSubmit(e,contact)}>
         {warning&&<p className='warning'>{warning}</p>}
         <input type="text" 
@@ -51,7 +55,7 @@ submit(contact)
                   rows="10"
                   value={contact.message}
                   onChange={(e)=>utils(e,contact,setContact)}
-                  placeholder='message'
+                  placeholder='Please enter your comment'
                   autoComplete='off'
                   >    
         </textarea>
@@ -63,3 +67,12 @@ submit(contact)
 }
 
 export default Contact
+
+export const DisplayContact=({contact})=>{
+
+return(<div className='display_contact max_width'>
+    <h3>{contact.name}</h3>
+    <p>{contact.message}</p>
+    <p className='italic'>{contact.region}</p>
+</div>)
+}

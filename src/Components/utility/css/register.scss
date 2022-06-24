@@ -1,25 +1,25 @@
 .register{
     
-    height:100% ;
-    width: 100%;
-    padding-bottom: 3rem;
+    height:100% !important;
+    width: 100% !important;
+    padding-bottom: 3rem !important;
 
     h1{
-        width: 100%;
-        text-align: center;
-        font-size: xx-large;
-        font-weight: bolder;
-        color: white;
-        margin-top: 2rem;
+        width: 100% !important;
+        text-align: center !important;
+        font-size: xx-large !important;
+        font-weight: bolder !important;
+        color: white !important;
+        margin-top: 2rem !important;
     }
     form{
-        display: flex;
-        flex-direction: column;
-        max-width: 500px;
-        min-width: 200px;
-        margin: 0 auto;
-        font-size: larger;
-        font-weight: bold;
+        display: flex !important;
+        flex-direction: column !important;
+        max-width: 500px !important;
+        min-width: 180px !important;
+        margin: 0 auto !important;
+        font-size: larger !important;
+        font-weight: bold !important;
 
         input,select,textarea,div{
             width: 90%;
@@ -33,27 +33,47 @@
             color: white;
         }
         label{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            margin: 0 auto !important;
+            background: transparent !important;
             img{
-                border-radius: 50%;
+                border-radius: 50% !important;
             }
         }
         div{
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-weight: bolder;
-            background-color: transparent;
+            border: none !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            font-weight: bolder !important;
+            background-color: transparent !important;
             .swap{
-                background-color: transparent;
-                border: none;
-                color: white;
+                background-color: transparent !important;
+                border: none !important;
+                color: white !important;
             }
         }
+    }
+}
+
+.display_contact{
+    min-width:200px;
+    max-width: 300px;
+    padding: 5px;
+    max-height: max-content;
+    background-color: rgba(16, 25, 62, 0.766);
+    border-radius: 5px;
+    margin: 10px 1rem;
+    h3{
+        width: 100%;
+        text-align: center;
+    }
+    .italic{
+        font-style: italic;
+        width: 100%;
+        text-align: right;
     }
 }

@@ -1,13 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import About from '../utility/About'
 import Nav from '../utility/Nav'
 import Services from '../utility/Services'
 import WhatPeopleSayAboutUs from '../utility/What People Say About Us'
 import Footer from '../utility/Footer'
-import Contact from '../utility/Contact'
+import Contact, { DisplayContact } from '../utility/Contact'
+import * as appActions from '../../redux/actions/app'
+import { useSelector } from 'react-redux'
 
 function Home() {
+const contacts = useSelector(state=>state.app.contacts)
+useEffect(()=>{
+  appActions.getContacts()
+},[])
+
   return (<>
   <section className='welcome'>
   </section>
@@ -26,6 +33,11 @@ function Home() {
   <Services/>
   <WhatPeopleSayAboutUs/>
   <Contact/>
+  <section className="contacts_display_container scroll max_width">
+    {
+      contacts?.map(contact=><DisplayContact contact={contact} key={contact.id}/>)
+    }
+  </section>
   <Footer/>
   </>)
 }

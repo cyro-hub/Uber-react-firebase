@@ -4,11 +4,10 @@ import * as appActions from './app'
 import * as fire from '../../firebase'
 import { ref, uploadBytes, getDownloadURL ,deleteObject } from "firebase/storage";
 import {collection, query, where, getDocs, addDoc,deleteDoc,doc,updateDoc} from 'firebase/firestore'
-import { createUserWithEmailAndPassword ,signInWithEmailAndPassword,signOut} from "firebase/auth";
+import { createUserWithEmailAndPassword ,signInWithEmailAndPassword,signOut,updateProfile} from "firebase/auth";
 import {db} from '../../firebase'
 
 export const signUpUser = async(user)=>{
-
 let references = collection(db,'users')
 const imageName = (new Date()).toUTCString();
 const imageRef = ref(fire.storage, imageName);
@@ -26,9 +25,20 @@ return await uploadBytes(imageRef, user.imageURL)
                                              uid:userCredential.user.uid,
                                              email:''}
                     addDoc(references,newUser).then(()=>{
+                      updateProfile(fire.auth.currentUser, {
+                        displayName: newUser.name, photoURL:newUser.imageURL
+                      }).then(()=>{
                         appActions.isPosting()
                         appActions.isPostModal()
+                      })
                     })
+                }).catch(error=>{
+                  // deleting image if there is error loading
+                  const desertRef = ref(fire.storage, imageName);
+                  deleteObject(desertRef).then(() => {
+                    appActions.isPosting()
+                    appActions.isPostModal()
+                  })
                 })
             }
           })
@@ -48,11 +58,11 @@ export const signout =async()=>{
 }
 
 export const getPostsForUsers =async(city)=>{
-  if(city==='undefined') return
-
+  if(typeof(city)!=='string') return
   let references = collection(db,'posts')
+  const q = query(references, where('city','==',city));
   let arr = []
-  const locations = await getDocs(references,where('city','==',city));
+  const locations = await getDocs(q);
 
   locations.forEach((doc) => {
     arr.push({...doc.data(),id:doc.id});
@@ -76,8 +86,9 @@ export const getUsers =async(city)=>{
   if(city==='undefined') return
 
   let references = collection(db,'users')
+  const q = query(references, where('city','==',city),where('role','==','driver'));
   let arr = []
-  const locations = await getDocs(references,where('city','==',city));
+  const locations = await getDocs(q);
 
   locations.forEach((doc) => {
     arr.push({...doc.data(),id:doc.id});
@@ -128,7 +139,7 @@ export const postComment = async(post,comment)=>{
   let references = collection(db,'posts')
   let newPost = {...post,comment:comment}
   return await updateDoc(doc(references,post.id),newPost).then(()=>{
-    getPostsForUsers(comment.city);
+    getPostsForUsers(comment[comment.length-1].city);
   })
 }
 

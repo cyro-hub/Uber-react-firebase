@@ -4,10 +4,16 @@ import * as userActions from '../../redux/actions/user'
 import Avatar from '@mui/material/Avatar';
 import Nav from './Nav'
 import {regions} from '../data'
-import {utils,submit} from '../utility/utility'
+import {utils} from '../utility/utility'
 import './css/register.scss'
+import {BiRefresh} from 'react-icons/bi'
+import {AiOutlineUser} from 'react-icons/ai'
+import {handleLocation} from './utility'
+import {useSelector} from 'react-redux'
 
 function Register() {
+const area = useSelector(state=>state.app.area)
+const userDetails = useSelector(state=>state.user.userDetails)
 const [warning,setWarning]=useState('')
 const [success,setSuccess]=useState('')
 const [image,setImage]=useState(null)
@@ -18,8 +24,31 @@ const [user,setUser] = useState({
   confirmPassword:'',
   location:regions[0],
   role:'user',
-  imageURL:'url'
+  imageURL:'url',
+  city:''
 })
+const handleRefresh=()=>{
+  handleLocation()
+  setUser({...user,city:area?.city,
+                    region:area?.region,
+                    timeZone:area?.timezone,
+                    ip:area?.ip,
+                    role:userDetails?.role,
+                    org:area?.org,})
+}
+
+useEffect(()=>{
+  handleRefresh() 
+},[])
+
+useEffect(()=>{
+  setUser({...user,city:area?.city,
+    region:area?.region,
+    timeZone:area?.timezone,
+    ip:area?.ip,
+    role:userDetails?.role,
+    org:area?.org,})
+},[user,area,userDetails])
 
 const handleSubmit=(e)=>{
   e.preventDefault()
@@ -60,7 +89,7 @@ useEffect(()=>{
 
   return <section className='register max_width'>
     <Nav/>
-    <h1>Sign-up</h1>
+    <h1>Register</h1>
     <form onSubmit={handleSubmit}>
       {warning&&<p className='warning'>{warning}</p>}
       {success&&<p className='success'>{success}</p>}
@@ -68,9 +97,9 @@ useEffect(()=>{
           {
             image?<Avatar alt="Selected image"
                           src={URL.createObjectURL(image)}
-                          sx={{ width: 120, height: 120 }}/>:<>
-                          <Avatar sx={{ width: 100, height: 110 }}/>
-                          Select an image</>
+                          sx={{ width: 120, height: 120 }}/>:<div className='preImage'>
+                            <AiOutlineUser size={40}/>
+                          <p>Add profile image</p></div>
           }
           <input type="file"  
                  className='input' 
@@ -85,25 +114,25 @@ useEffect(()=>{
                name='name' 
                value={user.name} 
                onChange={(e)=>utils(e,user,setUser)}
-               placeholder='Please Enter your name'
+               placeholder='Name'
                autoComplete='off' />
         <input type="email" 
                name='email' 
                value={user.email} 
                onChange={(e)=>utils(e,user,setUser)}
-               placeholder='Please Enter your email'
+               placeholder='Email'
                autoComplete='off' />
         <input type="password" 
                name='password' 
                value={user.password} 
                onChange={(e)=>utils(e,user,setUser)}
-               placeholder='Please Enter your password'
+               placeholder='Password'
                autoComplete='off' />
         <input type="password" 
                name='confirmPassword' 
                value={user.confirmPassword} 
                onChange={(e)=>utils(e,user,setUser)}
-               placeholder='Please Confirm your password'
+               placeholder='Confirm your password'
                autoComplete='off' />
         <select name="location" 
                 onChange={(e)=>utils(e,user,setUser)}
@@ -120,15 +149,17 @@ useEffect(()=>{
                 <option value='user'>User</option>
                 <option value='driver'>Driver</option>
         </select>
+        <p className='info'>If city is empty click the refresh icon or If you have change your location</p>
         <div>
-          <button type='submit' className='submit'>Signup</button>
-          <button className='swap' onClick={appActions.isSignup}>Signin</button>
+          <button type='submit' className='submit'>Register</button>
+          <BiRefresh size={28}
+                     onClick={handleRefresh}/>
+          <button className='swap' onClick={appActions.isSignup}>Login</button>
         </div>
     </form>
   </section>
 }
 
-var numberPattern = new RegExp("^((62)|(67)|(66)|(65))[0-9]{7}$");
 var passwordPattern = new RegExp('^[0-9A-Za-z]{8,}$');
 
 export default Register

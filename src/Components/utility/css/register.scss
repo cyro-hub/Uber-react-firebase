@@ -37,10 +37,20 @@
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
-            margin: 0 auto !important;
+            margin: -25px auto !important;
             background: transparent !important;
             img{
                 border-radius: 50% !important;
+                width: 70px;
+                height: 70px;
+            }
+            .preImage{
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                p,svg{
+                    margin: 5px auto;
+                }
             }
         }
         div{

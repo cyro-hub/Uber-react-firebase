@@ -1,4 +1,5 @@
 import React,{useState} from 'react'
+import * as fire from '../../firebase'
 import {utils} from './utility'
 import './css/comment.scss'
 import {IoMdSend} from 'react-icons/io'
@@ -10,7 +11,6 @@ import ClipLoader from "react-spinners/ClipLoader";
 function Comment({post}) {
 const [posting,setPosting] = useState(false)
 const area = useSelector(state=>state.app.area)
-const userDetails = useSelector(state=>state.user.userDetails)
 ///destructure post to a comment
 const [commentData,setCommentData]=useState({
     name:'',
@@ -19,8 +19,8 @@ const [commentData,setCommentData]=useState({
 
 const handleSubmit=(e)=>{
 e.preventDefault()
-setCommentData({...commentData,name:userDetails.name,
-                               city:area?.city})
+setCommentData({...commentData,name:fire.auth.currentUser.displayName,
+                               city:area.city})
 
     for(const key in commentData){
         if(commentData[key]===''){

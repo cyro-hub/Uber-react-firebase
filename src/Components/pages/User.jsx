@@ -1,6 +1,5 @@
 import React, { useState ,useEffect} from 'react'
 import {Link} from 'react-router-dom'
-import * as appActions from '../../redux/actions/app'
 import * as userActions from '../../redux/actions/user'
 import * as utils from '../utility/utility'
 import '../utility/css/user.scss'
@@ -13,10 +12,7 @@ import {BiRefresh} from 'react-icons/bi'
 function User() {
 const [search,setSearch]=useState('')
 const [success,setSuccess]=useState('')
-const open = useSelector(state=>state.app.isPostModal)
 const area = useSelector(state=>state.app.area)
-const isPosting = useSelector(state=>state.app.isPosting)
-const userCurrentLocation = useSelector(state=>state.app.area)
 const user = useSelector(state=>state.user.user)
 const posts = useSelector(state=>state.user.posts);
 const users = useSelector(state=>state.user.users);
@@ -82,10 +78,10 @@ useEffect(()=>{
             {
                 posts?.filter(post=>post.location.toLocaleLowerCase().includes(search.toLocaleLowerCase())).map((post,i)=><React.Fragment key={i}>
                     {
-                        post.role=='user'&&<>{post.uid==user.uid?<PostUser post={post}/>:<Post post={post}/>}</>
+                        post.role==='user'&&<>{post.uid===user.uid?<PostUser post={post}/>:<Post post={post}/>}</>
                     }
                     {
-                        post.role=='driver'&&<>{post.uid==user.uid?<PostUser post={post}/>:<Post post={post}/>}</>
+                        post.role==='driver'&&<>{post.uid===user.uid?<PostUser post={post}/>:<Post post={post}/>}</>
                     }
                     </React.Fragment>)
             }

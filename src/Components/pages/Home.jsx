@@ -26,7 +26,7 @@ useEffect(()=>{
         We always try to make our users Happy. We provide all kind of facilities.<br/>
         Your Satisfaction is our main priority
       </p>
-      <Link to='/user'>Get Started</Link>
+      <Link to='/user' className='navigate_to_user'>Get Started</Link>
     </div>
   </section>
   <About/>

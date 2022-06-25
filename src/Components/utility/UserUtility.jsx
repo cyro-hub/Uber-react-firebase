@@ -1,8 +1,6 @@
 import './css/userutility.scss'
-import {useState} from 'react'
 import locationImage from '../../images/location.jpg'
 import * as userActions from '../../redux/actions/user'
-import {AiOutlineEdit} from 'react-icons/ai';
 import {MdDoneAll,MdDone,MdOutlineComment,MdOutlineDeleteOutline} from 'react-icons/md';
 import Avatar from '@mui/material/Avatar';
 import { useSelector } from 'react-redux';
@@ -10,7 +8,7 @@ import Comment from './Comment';
 
 export const Post=({post})=>{
 const showComment = useSelector(state=>state.user.showComment)
-const {mapLocation,location,destination,description,postTime,status,comments,price,id} = post;
+const {mapLocation,location,destination,description,postTime,status,price} = post;
 const {lon,lat} = mapLocation;
 
         return(<div className='user_post'>
@@ -43,13 +41,13 @@ const {lon,lat} = mapLocation;
                 {status?<MdDoneAll size={20}/>:<MdDone size={20}/>}
                 <MdOutlineComment size={20} 
                 onClick={()=>userActions.isShowComment(post.id)}/>
-                {showComment===post.id&&<Comment post={post}/>}
             </div>
+                {showComment===post.id&&<Comment post={post}/>}
         </div>)
 }
 
 export const PostUser=({post})=>{
-const {mapLocation,location,destination,description,postTime,status,comments,price,id} = post;
+const {mapLocation,location,destination,description,postTime,status,price,id} = post;
 const {lon,lat} = mapLocation;
 const area = useSelector(state=>state.app.area)
 const showComment = useSelector(state=>state.user.showComment)
@@ -87,15 +85,14 @@ const showComment = useSelector(state=>state.user.showComment)
                             onClick={()=>userActions.status(post,area?.city)}/>}
             <MdOutlineComment size={20} 
                               onClick={()=>userActions.isShowComment(post.id)}/>
-                              {showComment===post.id&&<Comment post={post}/>}
             <MdOutlineDeleteOutline size={20}
                                     onClick={()=>userActions.removePostByUser(id,area?.city)}/>
         </div>
+        {showComment===post.id&&<Comment post={post}/>}
     </div>)
 }
 
 export const UserNames =({user}) =>{
-
 return(<div className='user_name'>
     <Avatar alt="Selected image"
             src={user.imageURL}

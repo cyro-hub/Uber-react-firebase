@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import {utils,submit} from '../utility/utility'
+import {utils} from '../utility/utility'
 import * as appActions from '../../redux/actions/app'
 import * as userActions from '../../redux/actions/user'
 import Nav from './Nav'
@@ -42,7 +42,7 @@ useEffect(()=>{
 })
   return <section className='register max-width'>
     <Nav/>
-    <h1>Sign-in</h1>
+    <h1>Login</h1>
     <form onSubmit={(e)=>handleSubmit(e)}>
       {warning&&<p className='warning'>{warning}</p>}
       {success&&<p className='success'>{success}</p>}
@@ -50,17 +50,17 @@ useEffect(()=>{
                name='email' 
                value={user.phone} 
                onChange={(e)=>utils(e,user,setUser)}
-               placeholder='Please Enter your email'
+               placeholder='Email'
                autoComplete='off' />
         <input type="password" 
                name='password' 
                value={user.password} 
                onChange={(e)=>utils(e,user,setUser)}
-               placeholder='Please Enter your password'
+               placeholder='Password'
                autoComplete='off' />
         <div>
-          <button type='submit' className='submit'>Signin</button>
-          <button className='swap' onClick={appActions.isSignup}>Signup</button>
+          <button type='submit' className='submit'>Login</button>
+          <button className='swap' onClick={appActions.isSignup}>Register</button>
         </div>       
     </form>
   </section>

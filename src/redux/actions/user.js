@@ -30,6 +30,7 @@ return await uploadBytes(imageRef, user.imageURL)
                       }).then(()=>{
                         appActions.isPosting()
                         appActions.isPostModal()
+                        window.location.href='/user';
                       })
                     })
                 }).catch(error=>{

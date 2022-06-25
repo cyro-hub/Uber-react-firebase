@@ -60,6 +60,7 @@ userActions.addPost(post).then(()=>{
   destination:'',
   description:'',
   price:'',})
+  window.location.href='/user';
 }).catch(error=>{
   setWarning(error.message)
 })

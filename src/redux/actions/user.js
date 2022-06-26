@@ -4,14 +4,13 @@ import * as appActions from './app'
 import * as fire from '../../firebase'
 import { ref, uploadBytes, getDownloadURL ,deleteObject } from "firebase/storage";
 import {collection, query, where, getDocs, addDoc,deleteDoc,doc,updateDoc} from 'firebase/firestore'
-import { createUserWithEmailAndPassword ,signInWithEmailAndPassword,signOut,updateProfile} from "firebase/auth";
+import { createUserWithEmailAndPassword ,signInWithEmailAndPassword,signOut,updateProfile,deleteUser } from "firebase/auth";
 import {db} from '../../firebase'
 
 export const signUpUser = async(user)=>{
 let references = collection(db,'users')
 const imageName = (new Date()).toUTCString();
 const imageRef = ref(fire.storage, imageName);
-
 return await uploadBytes(imageRef, user.imageURL)
       .then(() => {
         getDownloadURL(imageRef)
@@ -31,7 +30,12 @@ return await uploadBytes(imageRef, user.imageURL)
                         appActions.isPosting()
                         appActions.isPostModal()
                         window.location.href='/user';
-                      })
+                      }).catch(error=>{
+                        deleteUser(fire.auth.currentUser)})
+                      
+                    }).catch(error=>{
+                      // deleting user if any errror 
+                      deleteUser(fire.auth.currentUser)
                     })
                 }).catch(error=>{
                   // deleting image if there is error loading
@@ -39,10 +43,19 @@ return await uploadBytes(imageRef, user.imageURL)
                   deleteObject(desertRef).then(() => {
                     appActions.isPosting()
                     appActions.isPostModal()
+                    deleteUser(fire.auth.currentUser)
                   })
                 })
             }
-          })
+        }).catch((error)=>{
+          // deleting image if there is error loading
+          const desertRef = ref(fire.storage, imageName);
+                  deleteObject(desertRef).then(() => {
+                    appActions.isPosting()
+                    appActions.isPostModal()
+                    deleteUser(fire.auth.currentUser)
+                  })
+        })
       })
 }
 

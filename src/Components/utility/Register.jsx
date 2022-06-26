@@ -23,7 +23,7 @@ const [user,setUser] = useState({
   password:'',
   confirmPassword:'',
   location:regions[0],
-  role:'user',
+  role:'passenger',
   imageURL:'url',
   city:''
 })
@@ -33,7 +33,6 @@ const handleRefresh=()=>{
                     region:area?.region,
                     timeZone:area?.timezone,
                     ip:area?.ip,
-                    role:userDetails?.role,
                     org:area?.org,})
 }
 
@@ -46,9 +45,8 @@ useEffect(()=>{
     region:area?.region,
     timeZone:area?.timezone,
     ip:area?.ip,
-    role:userDetails?.role,
     org:area?.org,})
-},[user,area,userDetails])
+},[])
 
 const handleSubmit=(e)=>{
   e.preventDefault()
@@ -69,9 +67,6 @@ appActions.isPosting();
 
 // posting the user
 userActions.signUpUser({...user,imageURL:image})
-.then(()=>{
-  setSuccess('Successfully register')
-})
 .catch((error)=>{
   appActions.isPosting()
   setWarning(error.message)
@@ -85,7 +80,7 @@ useEffect(()=>{
   },4000)
 
   return()=>clearTimeout(timer)
-})
+},[warning])
 
   return <section className='register max_width'>
     <Nav/>
@@ -144,9 +139,8 @@ useEffect(()=>{
             }
         </select>
         <select name='role'
-                onChange={(e)=>utils(e,user,setUser)}
-                autoComplete='off'>
-                <option value='passenger'>User</option>
+                onChange={(e)=>utils(e,user,setUser)}>
+                <option value='passenger'>Passenger</option>
                 <option value='driver'>Driver</option>
         </select>
         <p className='info'>If city is empty click the refresh icon or If you have change your location</p>

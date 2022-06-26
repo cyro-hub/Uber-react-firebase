@@ -1,0 +1,35 @@
+.docs{
+    display: flex;
+    flex-direction: column;
+    font-size: x-large;
+
+    h1,h2,h3{
+        margin-top:1.5rem;
+    }
+    h3{
+        margin-bottom: 0.5rem;
+    }
+
+    ul{
+        display: flex;
+        flex-direction: column;
+        a{
+            text-decoration: none;
+            color: white;
+            cursor: pointer;
+        }
+    }
+    div{
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 5px;
+        margin: 10px auto;
+        width: 100%;
+        padding: 0.5rem;
+        p{
+            text-indent: 10px;
+            margin-top: 10px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+    }
+
+}

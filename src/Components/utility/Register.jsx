@@ -146,7 +146,7 @@ useEffect(()=>{
         <select name='role'
                 onChange={(e)=>utils(e,user,setUser)}
                 autoComplete='off'>
-                <option value='user'>User</option>
+                <option value='passenger'>User</option>
                 <option value='driver'>Driver</option>
         </select>
         <p className='info'>If city is empty click the refresh icon or If you have change your location</p>

@@ -78,7 +78,7 @@ useEffect(()=>{
             {
                 posts?.filter(post=>post.location.toLocaleLowerCase().includes(search.toLocaleLowerCase())).map((post,i)=><React.Fragment key={i}>
                     {
-                        post.role==='user'&&<>{post.uid===user.uid?<PostUser post={post}/>:<Post post={post}/>}</>
+                        post.role==='passenger'&&<>{post.uid===user.uid&&<PostUser post={post}/>}</>
                     }
                     {
                         post.role==='driver'&&<>{post.uid===user.uid?<PostUser post={post}/>:<Post post={post}/>}</>

@@ -140,7 +140,7 @@ export const setUserDetails = (role)=>{
 
 export const removePost = async() => {
   let references = collection(db,'posts')
-  await deleteDoc(doc(references,where('status','==',true)))
+  await deleteDoc(doc(query(references,where('status','==',true))))
 
 }
 

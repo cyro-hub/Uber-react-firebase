@@ -1,4 +1,4 @@
-// import React,{useState} from 'react'
+import React,{useState} from 'react'
 import { useSelector } from 'react-redux';
 import {Outlet,Navigate} from 'react-router-dom';
 import { onAuthStateChanged } from "firebase/auth";
@@ -10,24 +10,18 @@ function ProtectedRoute() {
 const user = useSelector(state=>state.user.user)
 
 onAuthStateChanged(fire.auth, (user) => {
+  userActions.setUser(user)
   if (user) {
-      userActions.setUser(user)
-      if(user.uid){
-        const getUserRole =async()=>{
+        (async ()=>{
           let references = collection(fire.db,'users')
           let arr = []
-          const locations = await getDocs(references,where('uid','==',user?.uid));
+          const locations = await getDocs(query(references,where('uid','==',user?.uid)));
         
           locations.forEach((doc) => {
             arr.push({...doc.data(),id:doc.id});
           });
-          userActions.setUserRole(arr[0])
-      }
-
-      getUserRole()
-      }
-    } else {
-      userActions.setUser(null)
+          userActions.setUserDetails(arr[0]) 
+      })()
     }
 });
 

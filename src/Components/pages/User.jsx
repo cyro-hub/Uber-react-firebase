@@ -13,16 +13,15 @@ function User() {
 const [search,setSearch]=useState('')
 const [success,setSuccess]=useState('')
 const area = useSelector(state=>state.app.area)
-const user = useSelector(state=>state.user.user)
 const posts = useSelector(state=>state.user.posts);
 const users = useSelector(state=>state.user.users);
+const userDetails = useSelector(state=>state.user.userDetails)
 
 const handleRefresh=()=>{
     utils.handleLocation()
-    userActions.getPostsForUsers(area?.city);
+    userActions.getPostsForUsers(area?.city,userDetails.role,userDetails.uid);
     userActions.getUsers(area?.city)
 }
-
 useEffect(()=>{
     utils.handleLocation()
     setSuccess('Click the refresh icon to see post')
@@ -30,17 +29,9 @@ useEffect(()=>{
 
 useEffect(()=>{
     const timer = setInterval(()=>{
-        userActions.getUsers(area?.city)
-        utils.handleLocation()
+        handleRefresh();
         userActions.removePost()
-    },600000)
-return ()=>clearInterval(timer)
-})
-
-useEffect(()=>{
-    const timer = setInterval(()=>{
-        userActions.getPostsForUsers(area?.city)
-    },60000)
+    },70000)
 return ()=>clearInterval(timer)
 })
 
@@ -78,10 +69,10 @@ useEffect(()=>{
             {
                 posts?.filter(post=>post.location.toLocaleLowerCase().includes(search.toLocaleLowerCase())).map((post,i)=><React.Fragment key={i}>
                     {
-                        post.role==='passenger'&&<>{post.uid===user.uid&&<PostUser post={post}/>}</>
+                        userDetails.role==='passenger'&&<PostUser post={post}/>
                     }
                     {
-                        post.role==='driver'&&<>{post.uid===user.uid?<PostUser post={post}/>:<Post post={post}/>}</>
+                        userDetails.role==='driver'&&<>{post.uid===userDetails.uid?<PostUser post={post}/>:<Post post={post}/>}</>
                     }
                     </React.Fragment>)
             }

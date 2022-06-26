@@ -13,7 +13,6 @@ import {useSelector} from 'react-redux'
 
 function Register() {
 const area = useSelector(state=>state.app.area)
-const userDetails = useSelector(state=>state.user.userDetails)
 const [warning,setWarning]=useState('')
 const [success,setSuccess]=useState('')
 const [image,setImage]=useState(null)

@@ -8,6 +8,6 @@ export const getContacts = 'GET_CONTACTS'
 /// user action types
 export const getPosts ='GET_POSTS'
 export const getUsers = 'GET_USERS'
-export const setUser = 'SET_USER'
-export const setUserRole = 'SET_USER_ROLE'
+export const setUserDetails = 'SET_USER_DETAILS'
 export const isShowComment = 'IS_SHOW_COMMENT'
+export const setUser ='SET_USER'

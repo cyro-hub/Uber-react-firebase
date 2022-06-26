@@ -26,7 +26,7 @@ const handleSubmit=(e)=>{
   userActions.signInUser(user)
   .then(()=>{
     appActions.isPosting()
-    window.location.href='/user';
+    window.location.href='/user'
   }).catch(error=>{
     setWarning(error.message)
     appActions.isPosting()

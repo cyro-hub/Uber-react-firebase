@@ -17,15 +17,15 @@ const user = (state=initialState,action)=>{
                 ...state,
                 showComment:action.payload
             }
-        case types.setUserRole:
-            return{
-                ...state,
-                userDetails:action.payload
-            }
         case types.setUser:
             return{
                 ...state,
                 user:action.payload
+            }
+        case types.setUserDetails:
+            return{
+                ...state,
+                userDetails:action.payload
             }
         case types.getUsers:
             return{

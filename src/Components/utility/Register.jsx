@@ -10,11 +10,13 @@ import {BiRefresh} from 'react-icons/bi'
 import {AiOutlineUser} from 'react-icons/ai'
 import {handleLocation} from './utility'
 import {useSelector} from 'react-redux'
+import geohash from "ngeohash";
 
 function Register() {
 const area = useSelector(state=>state.app.area)
+const mapLocation = useSelector(state=>state.app.mapLocation)
 const [warning,setWarning]=useState('')
-const [success,setSuccess]=useState('')
+// const [success,setSuccess]=useState('')
 const [image,setImage]=useState(null)
 const [user,setUser] = useState({
   name:'',
@@ -32,18 +34,17 @@ const handleRefresh=()=>{
                     region:area?.region,
                     timeZone:area?.timezone,
                     ip:area?.ip,
+                    geohash:geohash.encode(mapLocation?.lat, mapLocation?.lon),
                     org:area?.org,})
 }
 
 useEffect(()=>{
   handleRefresh() 
-},[])
-
-useEffect(()=>{
   setUser({...user,city:area?.city,
     region:area?.region,
     timeZone:area?.timezone,
     ip:area?.ip,
+    geohash:geohash.encode(mapLocation?.lat, mapLocation?.lon),
     org:area?.org,})
 },[])
 
@@ -86,7 +87,7 @@ useEffect(()=>{
     <h1>Register</h1>
     <form onSubmit={handleSubmit}>
       {warning&&<p className='warning'>{warning}</p>}
-      {success&&<p className='success'>{success}</p>}
+      {/* {success&&<p className='success'>{success}</p>} */}
         <label htmlFor="image" className='submit contact'>
           {
             image?<Avatar alt="Selected image"

@@ -5,6 +5,7 @@ import {MdDoneAll,MdDone,MdOutlineComment,MdOutlineDeleteOutline} from 'react-ic
 import Avatar from '@mui/material/Avatar';
 import { useSelector } from 'react-redux';
 import Comment from './Comment';
+import moment from 'moment';
 
 export const Post=({post})=>{
 const showComment = useSelector(state=>state.user.showComment)
@@ -36,7 +37,7 @@ const {lon,lat} = mapLocation;
                 <h2>Description</h2>
                 <p>{description}</p>
             </div>
-            <p>{postTime}</p>
+            <p>{moment(postTime).fromNow()}</p>
             <div className='actions'>
                 {status?<MdDoneAll size={20}/>:<MdDone size={20}/>}
                 <MdOutlineComment size={20} 
@@ -77,7 +78,7 @@ const showComment = useSelector(state=>state.user.showComment)
             <h2>Description</h2>
             <p>{description}</p>
         </div>
-        <p>{postTime}</p>
+        <p>{moment(postTime).fromNow()}</p>
         <div className='actions'>
             {status?<MdDoneAll size={20}
                                onClick={()=>userActions.status(post,area?.city)}/>:

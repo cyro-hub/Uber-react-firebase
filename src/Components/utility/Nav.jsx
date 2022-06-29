@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../../images/logo.png'
 import {BiUserCircle} from 'react-icons/bi'
+import * as fire from '../../firebase'
+import Avatar from '@mui/material/Avatar';
 
 function Nav() {
 const [size,setSize]=useState(window.innerWidth);
+const user = fire.auth.currentUser;
 
 const sizeChecker =()=>{
     setSize(window.innerWidth);
@@ -38,7 +41,10 @@ useEffect(()=>{
         </div>
         {
         size>500&&
-        <Link to='/account'><BiUserCircle size={30}/></Link>
+        <Link to='/account'>{user?<Avatar alt="Selected image"
+                                          src={user.photoURL}
+                                          sx={{ width: 30, height: 30 }}
+                            />:<BiUserCircle size={30}/>}</Link>
         }
     </nav>
   )

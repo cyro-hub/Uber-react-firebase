@@ -3,7 +3,7 @@ import {store} from '../store'
 import * as appActions from './app'
 import * as fire from '../../firebase'
 import { ref, uploadBytes, getDownloadURL ,deleteObject } from "firebase/storage";
-import {collection, query, where, getDocs, addDoc,deleteDoc,doc,updateDoc} from 'firebase/firestore'
+import {collection, query, where, addDoc,deleteDoc,doc,updateDoc,onSnapshot} from 'firebase/firestore'
 import { createUserWithEmailAndPassword ,signInWithEmailAndPassword,signOut,updateProfile,deleteUser } from "firebase/auth";
 import {db} from '../../firebase'
 
@@ -67,68 +67,26 @@ export const signInUser =async(user)=>{
 
 export const signout =async()=>{
   signOut(fire.auth).then(() => {
-    //perform some actions
+    store.dispatch({type:types.getPosts,payload:[]})
+    store.dispatch({type:types.getUsers,payload:[]})
   }).catch((error) => {
     console.log(error)
   });
 }
 
-export const getPostsForUsers =async(city,role,uid)=>{
-  if(typeof(city)!=='string'&&typeof(role)!=='string') return
-
-  let references = collection(db,'posts')
-
-  let arr = []
-
-  if(role==='driver'){
-    let q = query(references, where('city','==',city)); 
-    
-    let locations = await getDocs(q);
-
-    locations.forEach((doc) => {
-      arr.push({...doc.data(),id:doc.id});
-    });
-  }else{
-    let q = query(references, where('uid','==',uid)); 
-    
-    let locations = await getDocs(q);
-
-    locations.forEach((doc) => {
-      arr.push({...doc.data(),id:doc.id});
-    });
-  }
- 
-  store.dispatch({
-      type:types.getPosts,
-      payload:arr
-  })
+export const getUserPosts =async(uid)=>{
+  onSnapshot(query(collection(fire.db, "posts"), where('uid','==',uid)), (querySnapshot)=>{
+      let posts = []
+      querySnapshot.forEach((doc) => {
+        posts.push({...doc.data(),id:doc.id});
+      });
+      store.dispatch({type:types.getPosts,payload:posts})
+    })
 }
 
 export const addPost =async(post)=>{
   let references = collection(db,'posts')
-  return await addDoc(references,post).then((posts)=>{
-    appActions.isPosting()
-    getPostsForUsers(post.city,post.role,post.uid);
-    getUsers(post.city);
-  })
-}
-
-export const getUsers =async(city)=>{
-  if(city==='undefined') return
-
-  let references = collection(db,'users')
-  const q = query(references, where('city','==',city),where('role','==','driver'));
-  let arr = []
-  const locations = await getDocs(q);
-
-  locations.forEach((doc) => {
-    arr.push({...doc.data(),id:doc.id});
-  });
-
-  store.dispatch({
-      type:types.getUsers,
-      payload:arr
-  })
+  return await addDoc(references,post)
 }
 
 export const setUserDetails = (role)=>{
@@ -138,33 +96,21 @@ export const setUserDetails = (role)=>{
   })
 }
 
-export const removePost = async() => {
-  let references = collection(db,'posts')
-  await deleteDoc(doc(query(references,where('status','==',true))))
-
-}
-
 export const removePostByUser = async(post) => {
   let references = collection(db,'posts')
-  await deleteDoc(doc(references,post.id)).then(()=>{
-    getPostsForUsers(post.city,post.role,post.uid);
-  })
+  await deleteDoc(doc(references,post.id))
 }
 
 export const status =async(post,city)=>{
   let references = collection(db,'posts')
   let newPost = {...post,status:!post.status}
-  await updateDoc(doc(references,post.id),newPost).then(()=>{
-    getPostsForUsers(post.city,post.role,post.uid);
-  })
+  await updateDoc(doc(references,post.id),newPost)
 }
 
 export const postComment = async(post,comment)=>{
   let references = collection(db,'posts')
   let newPost = {...post,comment:comment}
-  return await updateDoc(doc(references,post.id),newPost).then(()=>{
-    getPostsForUsers(post.city,post.role,post.uid);
-  })
+  return await updateDoc(doc(references,post.id),newPost)
 }
 
 export const isShowComment = (id)=>{

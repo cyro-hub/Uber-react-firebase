@@ -1,13 +1,15 @@
 import React,{useState,useEffect} from 'react';
-import Nav from './Nav'
-import * as fire from '../../firebase'
-import * as appActions from '../../redux/actions/app'
-import * as userActions from '../../redux/actions/user'
-import './css/register.scss'
+import Nav from './Nav';
+import * as fire from '../../firebase';
+import * as appActions from '../../redux/actions/app';
+import * as userActions from '../../redux/actions/user';
+import './css/register.scss';
 import {useSelector} from 'react-redux';
+import SyncLoader from 'react-spinners/SyncLoader';
+import BeatLoader from 'react-spinners/BeatLoader';
+import {handleLocation} from './utility';
+import geohash from "ngeohash";
 import {BiRefresh} from 'react-icons/bi'
-import SyncLoader from 'react-spinners/SyncLoader'
-import {handleLocation} from './utility'
 
 const ModalDiv = ()=>{
 const isPosting = useSelector(state=>state.app.isPosting)
@@ -16,6 +18,7 @@ const mapLocation = useSelector(state=>state.app.mapLocation)
 const userDetails = useSelector(state=>state.user.userDetails)
 const [warning,setWarning]=useState('');
 const [success,setSuccess]=useState('');
+const [isLoading,setIsLoading]=useState(false)
 const [post,setPost]=useState({
   location:'',
   destination:'',
@@ -23,7 +26,7 @@ const [post,setPost]=useState({
   price:'',
   mapLocation:'',
   comment:[],
-  postTime:`${(new Date()).getHours()}:${(new Date()).getMinutes()}:${(new Date()).getSeconds()}`,
+  postTime:(new Date()).toUTCString(),
   status:false,
   uid:fire.auth.currentUser?.uid,
 })
@@ -33,15 +36,22 @@ const handleChange=(e)=>{
 }
 
 const handleRefresh=()=>{
+  setIsLoading(true)
   handleLocation()
-  setPost({...post,country:area.country,
-    city:area?.city,
-    region:area?.region,
-    timeZone:area?.timezone,
-    ip:area?.ip,
+  if(area===null && mapLocation===null){
+    setWarning('Was unable to get you location click refresh again')
+    setIsLoading(false)
+    return
+  }
+  setPost({...post,
     role:userDetails?.role,
-    org:area?.org,
-    mapLocation:mapLocation,})
+    mapLocation:mapLocation,
+    geohash:geohash.encode(mapLocation?.lat, mapLocation?.lon),
+    uid:fire.auth.currentUser?.uid})
+    setWarning('')
+  setSuccess(`You live in ${area?.city} ${area?.timezone}`)
+  setIsLoading(false)
+  return;
 }
 
 const submitPost=(e)=>{
@@ -60,9 +70,12 @@ userActions.addPost(post).then(()=>{
   destination:'',
   description:'',
   price:'',})
-  window.location.href='/user';
+  appActions.isPosting()
+  setSuccess('Successfully added a post')
+  // window.location.href='/user';
 }).catch(error=>{
   setWarning(error.message)
+  appActions.isPosting()
 })
 
 }
@@ -118,8 +131,10 @@ useEffect(()=>{
               size={5} />:'Post'
             }
           </button>
-          <BiRefresh size={25}
-                     onClick={handleRefresh}/>
+          {isLoading?<BeatLoader color={`green`} 
+              loading={true} 
+              size={15}/>:<BiRefresh size={25}
+              onClick={handleRefresh}/>}
       </div>
       </form>
   </section>

@@ -28,7 +28,6 @@ const handleSubmit=(e)=>{
     appActions.isPosting()
     window.location.href='/user'
   }).catch(error=>{
-    setWarning(error.message)
     appActions.isPosting()
   })
 }

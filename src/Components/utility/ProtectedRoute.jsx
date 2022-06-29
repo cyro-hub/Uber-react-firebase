@@ -1,10 +1,9 @@
-import React,{useState} from 'react'
 import { useSelector } from 'react-redux';
 import {Outlet,Navigate} from 'react-router-dom';
 import { onAuthStateChanged } from "firebase/auth";
 import * as fire from '../../firebase'
 import * as userActions from '../../redux/actions/user'
-import {collection, query, where, getDocs, addDoc,deleteDoc,doc,updateDoc} from 'firebase/firestore'
+import {collection, query, where, getDocs} from 'firebase/firestore'
 
 function ProtectedRoute() {
 const user = useSelector(state=>state.user.user)

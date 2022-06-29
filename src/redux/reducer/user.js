@@ -35,7 +35,7 @@ const user = (state=initialState,action)=>{
         case types.getPosts:
             return{
                 ...state,
-                posts:action.payload
+                posts:action.payload,
             }
         default:
             return{

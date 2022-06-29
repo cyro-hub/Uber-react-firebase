@@ -1,9 +1,12 @@
 import { Link } from '@mui/material'
 import React from 'react'
 import '../utility/css/docs.scss'
+import Nav from '../utility/Nav'
 
 function Docs() {
-  return (<div className='docs max_width'>
+  return (<>
+  <Nav/>
+  <div className='docs max_width'>
       <h1>Content</h1>
       <ul>
           <Link to='' onClick={() => window.location.assign("#about-home")}>Home page</Link>
@@ -41,7 +44,7 @@ function Docs() {
           <p>The post page cpntains just a single form to make a post. Note that all input must be filled before submission otherwise you will have a warning message at the top of the form</p>
           <p>At the bottom of the page you have a refresh icon and a post button. The post button let's you create the post while the refresh button only helps you get you current position to the app</p>
       </div>
-  </div>)
+  </div></>)
 }
 
 export default Docs

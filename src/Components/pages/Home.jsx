@@ -7,10 +7,10 @@ import WhatPeopleSayAboutUs from '../utility/What People Say About Us'
 import Footer from '../utility/Footer'
 import Contact, { DisplayContact } from '../utility/Contact'
 import * as appActions from '../../redux/actions/app'
-import { useSelector } from 'react-redux'
+// import { useSelector } from 'react-redux'
 
 function Home() {
-const contacts = useSelector(state=>state.app.contacts)
+// const contacts = useSelector(state=>state.app.contacts)
 useEffect(()=>{
   appActions.getContacts()
 },[])
@@ -33,11 +33,6 @@ useEffect(()=>{
   <Services/>
   <WhatPeopleSayAboutUs/>
   <Contact/>
-  <section className="contacts_display_container scroll max_width">
-    {
-      contacts?.map(contact=><DisplayContact contact={contact} key={contact.id}/>)
-    }
-  </section>
   <Footer/>
   </>)
 }

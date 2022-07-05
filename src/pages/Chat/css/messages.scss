@@ -1,0 +1,114 @@
+.messages{
+    width: 100%;
+    height: 95%;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(31, 45, 84);
+    margin:0px -10px;
+    border-radius: 10px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding: 10px;
+    letter-spacing: -1.5px;
+    position: absolute;
+    bottom: 2.2rem;
+
+    .receiver{
+        display: flex;
+        flex-direction: row;
+        padding: 5px;
+        width: fit-content;
+        max-width: 80%;
+        margin-right: auto;
+        color: white;
+        margin-top:10px;
+
+        .left-down {
+                margin-top: auto;
+                margin-bottom: 10px;
+            }
+
+        .msg_content{
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            margin: -2px 0px;
+            margin-bottom: -2px;
+            line-height: 18px;
+            padding: 5px 10px;
+            border-radius: 8px;
+
+
+            .msg{
+                background-color: rgba(255, 255, 255, 0.05);
+                padding: 5px 10px;
+                width: 100%;
+                border-radius: 10px;
+                p{
+                    width: 100%;
+                    color: rgba(255, 255, 255, 0.75);
+                    font-size:15px;
+                }
+                .left{
+                    font-weight: bold;
+                    color: white;
+                    font-size: 18px;
+                }
+            }
+            .right{
+                    width: 100%;
+                    text-align: right;
+                    font-size: 12px;
+                    font-style: oblique;
+                }
+        }
+    }
+
+    .sender{
+        display: flex;
+        flex-direction: row;
+        width: fit-content;
+        max-width: 80%;
+        margin-left: auto;
+        color: white;
+        margin-top:10px;
+        .right-down{
+            margin-top: auto;
+            margin-bottom: 10px;
+        }
+
+        .msg_content{
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            margin: -2px 0px;
+            margin-bottom: -2px;
+            line-height: 18px;
+            padding: 5px 10px;
+            border-radius: 8px;
+            .msg{
+                background-color: rgb(2, 32, 63);
+                padding: 5px 10px;
+                width: 100%;
+                border-radius: 10px;
+                p{
+                    width: 100%;
+                    text-align: right;
+                    color: rgba(255, 255, 255, 0.75);
+                    font-size:15px;
+                }
+                .right{
+                    font-weight: bold;
+                    color: white;
+                    font-size: 18px;
+                }
+            }
+            .left{
+                    width: 100%;
+                    text-align: left;
+                    font-size: 12px;
+                    font-style: oblique;
+                }
+        }
+    }
+}

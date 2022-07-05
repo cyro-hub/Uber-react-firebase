@@ -6,8 +6,10 @@ const initialState = {
     drivers:[],
     users:[],
     user:{},
-    userDetails:'',
-    showComment:''
+    userDetails:{},
+    showComment:'',
+    chatName:null,
+    messages:[]
 }
 
 const user = (state=initialState,action)=>{
@@ -36,6 +38,16 @@ const user = (state=initialState,action)=>{
             return{
                 ...state,
                 posts:action.payload,
+            }
+        case types.setChatName:
+            return{
+                ...state,
+                chatName:action.payload
+            }
+        case types.getMessagesOfChatName:
+            return{
+                ...state,
+                messages:action.payload
             }
         default:
             return{

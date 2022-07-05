@@ -3,13 +3,13 @@ import {store} from '../store'
 import * as appActions from './app'
 import * as fire from '../../firebase'
 import { ref, uploadBytes, getDownloadURL ,deleteObject } from "firebase/storage";
-import {collection, query, where, addDoc,deleteDoc,doc,updateDoc,onSnapshot} from 'firebase/firestore'
+import {collection, query, where, addDoc,deleteDoc,doc,updateDoc,onSnapshot,orderBy,Timestamp,setDoc} from 'firebase/firestore'
 import { createUserWithEmailAndPassword ,signInWithEmailAndPassword,signOut,updateProfile,deleteUser } from "firebase/auth";
 import {db} from '../../firebase'
 
 export const signUpUser = async(user)=>{
 let references = collection(db,'users')
-const imageName = (new Date()).toUTCString();
+const imageName = 'users/'+(new Date()).toUTCString();
 const imageRef = ref(fire.storage, imageName);
 return await uploadBytes(imageRef, user.imageURL)
       .then(() => {
@@ -65,10 +65,11 @@ export const signInUser =async(user)=>{
   return await signInWithEmailAndPassword(fire.auth, user.email, user.password)
 }
 
-export const signout =async()=>{
-  signOut(fire.auth).then(() => {
-    store.dispatch({type:types.getPosts,payload:[]})
-    store.dispatch({type:types.getUsers,payload:[]})
+export const signout =async(user)=>{
+  await signOut(fire.auth).then(() => {
+    let references = collection(fire.db, 'users')
+    let newUser = { ...user, online: false }
+    updateDoc(doc(references, user.id), newUser)
   }).catch((error) => {
     console.log(error)
   });
@@ -81,6 +82,7 @@ export const getUserPosts =async(uid)=>{
         posts.push({...doc.data(),id:doc.id});
       });
       store.dispatch({type:types.getPosts,payload:posts})
+      localStorage.setItem('posts',JSON.stringify(posts))
     })
 }
 
@@ -120,4 +122,60 @@ export const isShowComment = (id)=>{
 
 export const setUser=(user)=>{
   store.dispatch({type:types.setUser,payload:user})
+}
+
+export const setChatName = async(chatName,userDetails,lastMessage)=>{
+
+  const id = userDetails.uid>chatName.uid?`${userDetails.uid+chatName.uid}`:`${chatName.uid+userDetails.uid}`;
+
+  store.dispatch({ type: types.setChatName, payload: chatName })
+  onSnapshot(query(collection(fire.db, "messages",id,'chat'),orderBy('messageTime','asc')),
+  (querySnapshot)=>{
+   let messages = []
+   querySnapshot.forEach((doc) => {
+     messages.push({...doc.data(),id:doc.id});
+   });
+   store.dispatch({type:types.getMessagesOfChatName,payload:messages})
+    })
+  updateDoc(doc(collection(fire.db, 'lastMessage'), id), { ...lastMessage, unread: false })
+}
+
+export const sendMessage=async(message)=>{
+const imageName = 'messages/'+(new Date()).toUTCString();
+const imageRef = ref(fire.storage, imageName);
+const {senderUID,receiverUID} = message;
+const id = senderUID>receiverUID?`${senderUID+receiverUID}`:`${receiverUID+senderUID}`
+let references = collection(db,'messages',id,'chat')
+
+if(message.file){
+  return await uploadBytes(imageRef, message.file)
+        .then(() => {
+          getDownloadURL(imageRef)
+            .then((url) => {
+              addDoc(references,{...message,file:url,
+                messageTime:Timestamp.fromDate(new Date())})
+                .then(()=>{
+                  setDoc(doc(fire.db,
+                    'lastMessage', id), {
+                    ...message, file: url,
+                    unread: true,
+                    messageTime: Timestamp.fromDate(new Date())
+                  })
+                })
+            }).catch((err)=>{
+              const desertRef = ref(fire.storage, imageName);
+                    deleteObject(desertRef)
+            })
+        })
+}else{
+  addDoc(references,{...message,messageTime:Timestamp.fromDate(new Date())})
+    .then(() => {
+      setDoc(doc(fire.db,
+        'lastMessage', id), {
+        ...message,
+        unread: true,
+        messageTime: Timestamp.fromDate(new Date())
+      })
+    })
+}
 }

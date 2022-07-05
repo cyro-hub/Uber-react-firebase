@@ -1,1 +1,1 @@
-check the 
+add a feature to tell the user to give permission for the website to access location
